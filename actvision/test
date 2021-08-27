@@ -1,0 +1,36 @@
+{
+	"Pattern": -1,
+	"Brightness_Control": {
+		"Mode": 0,
+		"Brightness": 20,
+		"CDS_Value": 0,
+		"Auto_Brightness": [
+			1,
+			10
+		],`1`2
+		"Auto_CDS": [
+			0,
+			0
+		]
+	},
+	"Power": {
+		"Power_Mode": 0,
+		"Manual_Control": 0,
+		"Auto_Power_On": [
+			0,
+			0
+		],
+		"Auto_Power_Off": [
+			0,
+			0
+		]
+	},
+	"Time": [
+		2021,
+		7,
+		21,
+		13,
+		42,
+		3
+	]
+}

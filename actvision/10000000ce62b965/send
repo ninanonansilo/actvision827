@@ -1,0 +1,93 @@
+﻿[
+	{
+		"time": {
+			"year": "2021",
+			"month": "8",
+			"day": "26",
+			"hour": "20",
+			"minute": "9",
+			"second": "46"
+		},
+		"type": "video",
+		"action": "play",
+		"title": [
+			"candle.avi"
+		]
+	},
+	{
+		"time": {
+			"year": "2021",
+			"month": "8",
+			"day": "26",
+			"hour": "20",
+			"minute": "9",
+			"second": "51"
+		},
+		"type": "video",
+		"action": "stop"
+	},
+	{
+		"time": {
+			"year": "2021",
+			"month": "8",
+			"day": "26",
+			"hour": "20",
+			"minute": "9",
+			"second": "52"
+		},
+		"type": "image",
+		"action": "play",
+		"title": "pikachu.jpg"
+	},
+	{
+		"time": {
+			"year": "2021",
+			"month": "8",
+			"day": "26",
+			"hour": "20",
+			"minute": "10",
+			"second": "1"
+		},
+		"type": "image",
+		"action": "stop"
+	},
+	{
+		"time": {
+			"year": "2021",
+			"month": "8",
+			"day": "26",
+			"hour": "20",
+			"minute": "9",
+			"second": "36"
+		},
+		"type": "string",
+		"action": "play",
+		"title": "fffff",
+		"detail_info": {
+			"x": "0",
+			"y": "0",
+			"width": "80",
+			"height": "64",
+			"scroll_fix": "0",
+			"play_speed": "5",
+			"play_count": "2",
+			"font_name": "NanumGothic",
+			"font_size": "64",
+			"thickness_italics": "1",
+			"red_green_blue": "(205, 19, 19)",
+			"play_second": "00"
+		}
+	},
+	{
+		"time": {
+			"year": "2021",
+			"month": "8",
+			"day": "26",
+			"hour": "20",
+			"minute": "10",
+			"second": "11"
+		},
+		"type": "string",
+		"action": "stop"
+	}
+]

@@ -1,0 +1,528 @@
+{% extends 'base.html' %} 
+{%block content%} 
+{%load static%}
+<head>
+    <style>
+        .box{
+            margin: 0 auto;
+            width: 400px;
+            height: 500px; 
+            border:3px solid #333333;
+            margin-top: 10%;
+            border-radius: 8px;
+        }
+        
+        .first-table{
+            text-align: center;
+            margin-top: 25px;
+            height: 375px;
+            width: 380px;
+        }
+
+        .keyward{
+            width: 150px;
+            color: white;
+        }
+
+        .keyboard{
+            width: 250px;
+        }
+
+        .text-field{
+            background-color: #454545; 
+            border: 1px solid #888888;
+            width: 220px;
+            height: 24px;
+            border-radius: 3px;
+            color: white
+        }
+
+        .check-btn {
+            font-size: 14px;
+            border: none;
+            height: 30px;
+            background-color: #636363;
+            color: white;
+            width: 120px;
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            font-size: 14px;
+            border: none;
+            height: 30px;
+            background-color: #636363;
+            color: white;
+            width: 60px;
+            font-weight: 600;
+        }
+
+        .bottom{
+            border-top: 2px solid #333333; 
+            margin-top: 50px; 
+        }
+
+        .bottom table{
+            height: 50px;
+            margin-left: 30px;
+        }
+
+        .bottom table .first{
+            width: 205px;
+        }
+
+        .bottom table .second{
+            width: 70px;
+        }
+
+        /* 조회 팝업 */
+        #popupCheck {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #popupCheck.hide {
+            display: none;
+        }
+
+        #popupCheck.has-filter {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        #popupCheck .content {
+            width: 865px;
+            height: 440px;
+            background: rgb(69, 69, 69);
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+        }
+
+        #popupCheck .popup-table{
+            width: 800px;
+            color: black;
+            table-layout: fixed; 
+            border-collapse: collapse;
+        }        
+        
+        #popupCheck .popup-table th{
+            width: 100px;
+            height: 20px;
+            font-size: 14px;
+            border-left: 2px solid rgb(190, 190, 190);
+            border-bottom: 2px solid rgb(190, 190, 190);
+            background-color: rgb(238, 238, 238);
+        }
+
+        #popupCheck .popup-table .odd td{
+            height: 20px;
+            border: 2px solid rgb(190, 190, 190);
+            background-color: rgb(238, 238, 238);
+        }
+
+        #popupCheck .popup-table .even td{
+            height: 20px;
+            border: 2px solid rgb(238, 238, 238);
+            background-color: rgb(190, 190, 190);
+        }
+
+        #popupCheck .button-table{
+            margin-right: 20px;
+            margin-top: 15px;
+        }
+
+        #popupCheck .button-table td{
+            width: 85px;
+        }
+
+        #popupCheck .okay{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            right: 0;
+            height: 30px;
+        }
+
+        #popupCheck .cancel{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+        }
+
+
+        /* 등록 팝업 */
+        #popup {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #popup.hide {
+            display: none;
+        }
+
+        #popup.has-filter {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        #popup .content {
+            width: 550px;
+            height: 200px;
+            background: #454545;
+            border-radius: 6px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+            color: white;
+            text-align: center;
+        }
+
+        #popup .title{
+            border-bottom: #363636 4px solid;
+            height: 30px;
+            font-size: 14px;
+            padding-top: 10px;
+
+        }
+
+        #popup .list-box{
+            background-color: #454545;
+            border:2px solid #888888;
+            height: 28px;
+            width: 340px;
+            color: white;
+        }
+        #popup .okay{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+        }
+
+        #popup .cancel{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+        }
+
+    </style>
+</head>
+<body bgcolor="#454545">
+    <div class="box">
+        <table align="center" class="first-table">
+            <tr>
+                <td class="keyward">
+                    ID
+                </td>
+                <td class="keyboard">
+                    <input type="text" name="id" class="text-field">
+                </td>
+            </tr>
+            <tr>
+                <td class="keyward">
+                    PW
+                </td>
+                <td class="keyboard">
+                    <input type="text" name="id" class="text-field">
+                </td>
+            </tr>
+            <tr>
+                <td class="keyward">
+                    설치장소
+                </td>
+                <td class="keyboard">
+                    <input type="text" name="id" class="text-field">
+                </td>
+            </tr>
+            <tr>
+                <td class="keyward">
+                    설치일
+                </td>
+                <td class="keyboard">
+                    <input type="text" name="id" class="text-field">
+                </td>
+            </tr>
+            <tr>
+                <td class="keyward">
+                    업체명
+                </td>
+                <td class="keyboard">
+                    <input type="text" name="id" class="text-field">
+                </td>
+            </tr>
+            <tr>
+                <td class="keyward">
+                    해상도
+                </td>
+                <td class="keyboard">
+                    <input type="text" name="id" class="text-field">
+                </td>
+            </tr>
+            <tr>
+                <td class="keyward">
+                    최대 밝기
+                </td>
+                <td class="keyboard">
+                    <input type="text" name="id" class="text-field">
+                </td>
+            </tr>
+            <tr>
+                <td class="keyward">
+                    플레이어 serial
+                </td>
+                <td class="keyboard">
+                    <input type="text" name="id" class="text-field">
+                </td>
+            </tr>
+        </table>
+
+        <div class="bottom">
+            <table>
+                <tr>
+                    <td class=first>
+                        <button type="submit" class="check-btn" onclick="showPopupCheck(false)">조회</button>
+                        <script>
+    function showPopupCheck(hasFilter) {
+	    const popupCheck = document.querySelector('#popupCheck');
+            if (hasFilter) {
+  	             popupCheck.classList.add('has-filter');
+  	             var input = {}
+  	             $.ajax({
+                            url : '{% url 'users_list' %}',
+                            type : 'POST',
+                            data : input,
+                            success:function(data){
+                            },
+                            error: function(){
+                                alert('error');}
+                        });
+  	             }
+  	        else {
+  	            popupCheck.classList.remove('has-filter'); }
+            popupCheck.classList.remove('hide');
+            }
+                        </script>
+                    </td>
+                    <td class="second">
+                        <button type="submit" class="submit-btn" onclick="showPopup(false)">등록</button>
+                    </td>
+                    <td class="third">
+                        <button type="submit" class="submit-btn">취소</button>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- 조회 팝업창 -->
+            <div id="popupCheck" class="hide">
+
+                <div class="content" >
+                    <table class="popup-table" align=left>
+                        <tr style="border-bottom: 5px solid rgb(68, 68, 68);">
+                            <th>ID</th>
+                            <th>PW</th>
+                            <th>설차장소</th>
+                            <th>설치일</th>
+                            <th>업체명</th>
+                            <th>해상도</th>
+                            <th>최대 밝기</th>
+                            <th>Serial</th>
+                        </tr>
+                        <tr class="odd">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        
+                    </table>
+                    <table align=right class="button-table">
+                        <tr>
+                            <td>
+                                <button class="okay" onclick="closePopupCheck()">확인</button>
+                            </td>
+                            <td>
+                                <button class="cancel" onclick="closePopupCheck()">취소</button>
+                            </td>
+                        </tr>
+                    </table>
+                   </div>
+                </div>
+            </div>
+            <script src="{%static 'check.js'%}"></script>
+
+            <!--등록하시겠습니까-->
+            <div id="popup" class="hide">
+
+                <div class="content">
+                    <div class="title">
+                        사용자 등록
+                    </div>
+                   <p style="margin-top: 25px; height: 65px; border-bottom: #363636 4px solid; ">
+                       <span style="font-size: 14px; padding-right: 15px;">등록하시겠습니까?</span>
+                       <input class="list-box" type="text">
+                   </p>
+                   <div align="right" style="padding-right:20px;">
+                    <span style="padding-right: 10px;">
+                        <button class="okay" onclick="closePopup()">확인</button>
+                    </span>
+                    <button class="cancel" onclick="closePopup()">취소</button>
+                   </div>
+                </div>
+            </div>
+            <script src="{%static 'register.js'%}"></script>
+        </div>
+    </div>
+
+</body>
+{%endblock content%} 

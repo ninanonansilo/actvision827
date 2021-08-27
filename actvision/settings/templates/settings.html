@@ -1,0 +1,664 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{%static 'settings.css'%}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        test();
+    });
+    </script>
+
+
+ <style>
+        .BLUE{
+        background-color: #0000FF;
+        }
+        .BLUE:hover{
+        background-color:#0000CD;
+
+        }
+
+    </style>
+
+</head>
+
+<body bgcolor="#454545">
+<table id = "setting" align="center" class="settings">
+    <!-- 헤드부 -->
+    <thead>
+        <caption></caption>
+    </thead>
+
+    <!-- 바디부 -->
+    <tbody style="text-align: center;">
+        <!-- 읽기 -->
+        <tr style="height: 50px; text-align: center;">
+            <th>읽기 </th>
+            <td>
+              <div class="button">
+                  <script>
+function selectHref() {
+choices_name = JSON.parse("{{a}}")
+
+alert(choices_name)
+}
+</script>
+                <button style="margin-top: 0px;" onclick="selectHref()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  class="setting-ok">설정값 확인</button>
+              </div>
+             </td>
+        </tr>
+
+        <!-- 패턴 -->
+         <tr style="height: 70px;">
+            <th>패턴 </th>
+            <td style="text-align: center;">
+              <table style="width: 320px; height: 60px; margin-left: 14px;">
+                <tr>
+                  <td style="border: none;"><input type="button" onclick="red()"  onMouseover="this.style.background='tomato';"
+                                                   onMouseout="this.style.background='RED';"value="RED" class="RED" /></td>
+                  <td style="border: none;"><input type="button" onclick="green()" onMouseover="this.style.background='#00ff00';"
+                                                   onMouseout="this.style.background='#22B14C';" value="GREEN" class="GREEN" /></td>
+
+                  <td style="border: none;"><input type="button" onclick="blue()"   value="BLUE" class="BLUE" /></td>
+                </tr>
+                <tr>
+                  <td style="border: none;"><input type="button" onclick="white()" onMouseover="this.style.background='#E0EBFF';"
+                                                   onMouseout="this.style.background='#FFFFFF';" value="WHITE" class="WHITE" /></td>
+                  <td style="border: none;"><input type="button" onclick="black()" onMouseover="this.style.background='#282828';"
+                                                   onMouseout="this.style.background='#000000';"value="BLACK" class="BLACK" /></td>
+                  <td style="border: none;"><input type="button" onclick="video()" onclick="black()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';" value="VIDEO" class="VIDEO" /></td>
+                </tr>
+                  <script>
+function red() {
+var input = "1"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("패턴 RED 설정")
+    },
+    error: function(){
+        alert('');}
+});
+    }
+function green() {
+var input = "2"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("패턴 GREEN 설정")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function blue() {
+var input = "3"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("패턴 BLUE 설정")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function white() {
+var input = "4"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("패턴 WHITE 설정")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function black() {
+var input = "0"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("패턴 BLACK 설정")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function video() {
+var input = "5"
+       $.ajax({
+    url : '{% url 'check_pattern' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("패턴 VIDEO 설정")
+    },
+    error: function(){
+
+        alert('');}
+});
+
+    }
+               </script>
+              </table>
+
+                <div>
+
+                </div>
+             </td>
+        </tr>
+
+        <!-- 밝기 -->
+        <tr style="height: 230px;">
+            <th>밝기</th>
+            <td>
+              <table style="width: 320px; margin-left: 14px;">
+                <tr>
+                  <td style="border: none;"><input type="button" id = "brightness_manual" onclick= "check_Brightness_mode_manual()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';" value="수동" class="VIDEO" /></td>
+                  <td style="border: none;"><input type="button"  onclick= "check_Brightness_mode_auto_time()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';" value="자동(시간)" class="VIDEO" /></td>
+                  <td style="border: none;"><input type="button" onclick= "check_Brightness_mode_auto_CDS()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';" value="자동(조도)" class="VIDEO" /></td>
+                    <script>
+function check_Brightness_mode_manual() {
+var input = "0"
+       $.ajax({
+    url : '{% url 'check_Brightness_mode' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("밝기 모드를 수동으로 설정합니다.")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function check_Brightness_mode_auto_time() {
+var input = "2"
+       $.ajax({
+    url : '{% url 'check_Brightness_mode' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("밝기 모드를 자동(시간)으로 설정합니다.")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+function check_Brightness_mode_auto_CDS() {
+var input = "1"
+       $.ajax({
+    url : '{% url 'check_Brightness_mode' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("밝기 모드를 자동(조도)로 설정합니다.")
+    },
+    error: function(){
+        alert('');}
+});
+
+    }
+
+                    </script>
+                </tr>
+                <tr style="height: 5px;">
+                  <td style="border: none;"></td>
+                </tr>
+<div>
+<script>
+$(document).ready(function(){
+	var input = "32"
+	$.ajax({
+            url : '{% url 'update_Brightness' %}',
+            type : 'POST',
+            data : input,
+            success:function(data){
+            alert("밝기의 기본값은 32, 조도값의 기본값은 0입니다.")
+            $("#input_brigtness").val(input);
+            },
+            error: function(){
+                alert('error');}
+        });
+});
+ $(function() {
+
+  $('.text-field').tooltip()
+
+})
+
+</script>
+                <form method="post" action="">{% csrf_token %}
+                    <tr>
+                        <tr style="height: 5px;">
+                        <td style="border: none;">수동 밝기
+                        <td style="border: none;"><input type="text" title = "밝기의 최대값은 63입니다." id = "input_brigtness" class="text-field" style="color: white;"
+                         style="cursor:pointer;" aria-hidden="true" delay = "0.1" ></td>
+                        <td style="border: none;"><input type="button" onclick="update()" formmethod="post" id="brigtness_button" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="설정" class="VIDEO"></td>
+                    </tr>
+                    <script>
+function update() {
+       var input = document.getElementById("input_brigtness").value;
+        if(input == ""){
+            alert("숫자를 입력하세요")
+            return
+       }
+       else if(isNaN(input) == 1){
+            alert("문자는 포함할 수 없습니다")
+            return
+       }
+       else if(input.indexOf(".") != -1){
+            alert("소수점은 포함할 수 없습니다.")
+            return
+       }
+       else if(input < 0){
+             alert("수동 밝기의 최소값는 0, 최대값은 63입니다.")
+             return
+       }
+       else if(input > 63){
+             alert("최대 밝기인 63으로 변경됩니다.")
+             input = "63"
+              $("#input_brigtness").val("63");
+            }
+       $.ajax({
+    url : '{% url 'update_Brightness' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("설정되었습니다.")
+    },
+    error: function(){
+        alert('숫자를 입력하세요 최소 : 0, 최대 : 63');}
+});
+    }
+                    </script>
+                </form>
+</div>
+                  <td style="border: none;"></td>
+<div>
+                <form method="post" action="">{% csrf_token %}
+                    <tr>
+                        <tr style="height: 5px;">
+<script>
+$(document).ready(function(){
+	var input = "0"
+	$.ajax({
+            url : '{% url 'update_CDS_Value' %}',
+            type : 'POST',
+            data : input,
+            success:function(data){
+            $("#input_CDS_Value").val(input);
+            },
+            error: function(){
+                alert('error');}
+        });
+});
+</script>
+                        <td style="border: none;">조도값</td>
+                        <td style="border: none;"><input type="text" id = "input_CDS_Value"  title = "조도값의 최대값은 255입니다." class="text-field" style="color: white;"
+                        style="cursor:pointer;" aria-hidden="true"></td>
+                        <td style="border: none;"><input type="button" onclick="update_CDS_Value()" formmethod="post" id="CDS_Value" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="읽기" class="VIDEO"></td>
+                        <script>
+function update_CDS_Value() {
+       var input = document.getElementById("input_CDS_Value").value;
+       if(input == ""){
+            alert("숫자를 입력하세요")
+            return
+       }
+       else if(isNaN(input) == 1){
+            alert("문자는 포함할 수 없습니다")
+            return
+       }
+       else if(input.indexOf(".") != -1){
+            alert("소수점은 포함할 수 없습니다.")
+            return
+       }
+       else if(input < 0){
+             alert("조도값의 최소값는 0, 최대값은 255입니다.")
+             return
+       }
+       else if(input > 255){
+             alert("최대 조도값인 255으로 변경됩니다.")
+             input = "255"
+              $("#input_CDS_Value").val("255");
+            }
+       $.ajax({
+    url : '{% url 'update_CDS_Value' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("설정되었습니다.")
+    },
+    error: function(){
+        alert('숫자를 입력하세요 최소 : 0, 최대 : 63');}
+});
+
+    }
+                    </script>
+                    </tr>
+                </form>
+</div>
+                <tr style="height: 5px;">
+                  <td style="border: none;"></td>
+                </tr>
+                <tr>
+                  <td style="border: none;"></td>
+                  <td style="border: none;">최소</td>
+                  <td style="border: none;">최대</td>
+                </tr>
+ <div>
+                <form method="post" action="">{% csrf_token %}
+                    <tr>
+                        <td style="border: none;">자동 밝기</td>
+                        <td style="border: none;"><input type="text" id = "min_brigtness"  class="text-field" style="color: white;"></td>
+                        <td style="border: none;"><input type="text" id = "max_brigtness"  class="text-field" style="color: white;"></td>
+                    </tr>
+
+                <tr>
+
+
+                  <td style="border: none;">조도값</td>
+                  <td style="border: none;"><input type="text" id = "min_CDS" class="text-field" style="color: white;"></td>
+                  <td style="border: none;"><input type="text" id = "max_CDS" class="text-field" style="color: white;"></td>
+                </tr>
+                <tr>
+                  <td style="border: none;"></td>
+                  <td style="border: none;"></td>
+                  <td style="border: none;"><input type="button" formmethod="post" onclick="update_min_max()" id="min_max" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="설정" class="VIDEO" /></td>
+                    <script>
+function update_min_max() {
+       let min_br = document.getElementById("min_brigtness").value;
+       let max_br = document.getElementById("max_brigtness").value;
+       let min_CDS = document.getElementById("min_CDS").value;
+       let max_CDS = document.getElementById("max_CDS").value;
+
+       let param = {'min_br' : min_br,
+       'max_br' : max_br,
+       'min_CDS' : min_CDS,
+       'max_CDS' : max_CDS,}
+       if(min_br == "" || max_br == ""  || min_CDS == "" || max_CDS == ""){
+                    alert("숫자를 입력하세요")
+                    return
+               }
+        else if(isNaN(min_br) == 1 || isNaN(max_br) == 1  || isNaN(min_CDS) == 1 || isNaN(max_CDS) == 1){
+                    alert("문자는 포함할 수 없습니다")
+                    return
+               }
+        else if(min_br.indexOf(".") != -1 || max_br.indexOf(".") != -1 ||min_CDS.indexOf(".") != -1 ||max_CDS.indexOf(".") != -1 ){
+                    alert("소수점은 포함할 수 없습니다.")
+                    return
+               }
+        else if(min_br < 0){
+                     alert("밝기의 최소값은 0입니다.")
+                     return
+               }
+        else if(max_br < 0){
+                     alert("밝기의 최소값은 0입니다.")
+                     return
+                    }
+        else if(max_br > 63){
+                     alert("밝기의 최대값인 63으로 변경됩니다.")
+                     max_br = "63"
+                     $("#max_brigtness").val("63");
+                     if(max_CDS > 255){
+                     alert("조도값의 최대값인 255로 변경됩니다.")
+                     max_CDS = "255"
+                     $("#max_CDS").val("255");
+        }
+        }
+        else if(min_CDS < 0){
+                     alert("조도값의 최소값은 0입니다.")
+                     return
+        }
+        else if(max_CDS < 0){
+                     alert("조도값의 최소값은 0입니다.")
+                     return
+        }
+        else if(max_CDS > 255){
+                     alert("조도값의 최대값인 255로 변경됩니다.")
+                     max_CDS = "255"
+                     $("#max_CDS").val("255");
+                     if(max_br > 63){
+                     alert("밝기의 최대값인 63으로 변경됩니다.")
+                     max_br = "63"
+                     $("#max_brigtness").val("63");
+        }
+        }
+        else if(max_br < min_br){
+                     alert("밝기의 최대값이 최소값보다 작을 수 없습니다.")
+                     return
+        }
+        else if(max_CDS < min_CDS){
+                    alert("조도값의 최대값이 최소값보다 작을 수 없습니다.")
+                    return
+        }
+           $.ajax({
+        url : '{% url 'update_min_max' %}',
+        type : 'POST',
+        data : param,
+        success:function(data){
+        alert("설정되었습니다.")
+        },
+        error: function(){
+            alert('error');}
+    });
+        }
+                    </script>
+                </tr>
+                </form>
+</div>
+              </table>
+             </td>
+        </tr>
+        <!-- 전원 -->
+<div>
+        <tr style="height: 200px;">
+            <th>전원</th>
+            <td>
+              <table style="width: 320px; margin-left: 14px;">
+                <tr>
+<script>
+function power_mode_manual() {
+var input = "0"
+       $.ajax({
+    url : '{% url 'power_mode' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("전원 모드가 수동으로 설정되었습니다.")
+    },
+    error: function(){
+        alert('');}
+});
+    }
+function power_mode_auto() {
+var input = "1"
+       $.ajax({
+    url : '{% url 'power_mode' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+     alert("전원 모드가 자동으로 설정되었습니다.")
+    },
+    error: function(){
+        alert('');}
+});
+    }
+</script>
+                  <td style="border: none;">전원 모드</td>
+                  <td style="border: none;"><input type="button"  onclick="power_mode_manual()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="수동" class="VIDEO" /></td>
+                  <td style="border: none;"><input type="button"  onclick="power_mode_auto()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="자동" class="VIDEO" /></td>
+
+                </tr>
+                <tr>
+<script>
+function manual_control_on() {
+var input = "1"
+       $.ajax({
+    url : '{% url 'manual_control' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("수동제어가 ON 설정되었습니다.")
+    },
+    error: function(){
+        alert('');}
+});
+    }
+function manual_control_off() {
+var input = "0"
+       $.ajax({
+    url : '{% url 'manual_control' %}',
+    type : 'POST',
+    data : input,
+    success:function(data){
+    alert("수동제어가 OFF 설정되었습니다.")
+    },
+    error: function(){
+        alert('');}
+});
+    }
+</script>
+                  <td style="border: none;"><p style="width: 100px;">수동 제어</p></td>
+                  <td style="border: none;"><input type="button"  onclick="manual_control_on()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="ON" class="VIDEO" /></td>
+                  <td style="border: none;"><input type="button"  onclick="manual_control_off()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="OFF" class="VIDEO" /></td>
+                </tr>
+                <tr style="height: 5px;">
+                  <td style="border: none;"></td>
+                </tr>
+        <form method="post" action="">{% csrf_token %}
+                <tr>
+                  <td style="border: none;"></td>
+                  <td style="border: none;">시</td>
+                  <td style="border: none;">분</td>
+                </tr>
+                <tr>
+                  <td style="border: none;">자동 ON</td>
+                  <td style="border: none;"><input type="text" id = "Auto_Power_On_hour" class="text-field" style="color: white;"></td>
+                  <td style="border: none;"><input type="text" id = "Auto_Power_On_min" class="text-field" style="color: white;"></td>
+                </tr>
+                <tr>
+                  <td style="border: none;">자동 OFF</td>
+                  <td style="border: none;"><input type="text" id = "Auto_Power_Off_hour" class="text-field" style="color: white;"></td>
+                  <td style="border: none;"><input type="text" id = "Auto_Power_Off_min" class="text-field" style="color: white;"></td>
+                </tr>
+                <tr>
+                  <td style="border: none;"></td>
+                  <td style="border: none;"></td>
+                  <td style="border: none;"><input type="button" formmethod="post" onclick="update_on_off()" id="Auto_On_Off" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="설정" class="VIDEO" /></td>
+<script>
+function update_on_off() {
+   let on_hour = document.getElementById("Auto_Power_On_hour").value;
+   let on_min = document.getElementById("Auto_Power_On_min").value;
+   let off_hour = document.getElementById("Auto_Power_Off_hour").value;
+   let off_min = document.getElementById("Auto_Power_Off_min").value;
+
+   let param = {'on_hour' : on_hour,
+   'on_min' : on_min,
+   'off_hour' : off_hour,
+   'off_min' : off_min,}
+
+    if(on_hour == "" || on_min == ""  || off_hour == "" || off_min == ""){
+    alert("숫자를 입력하세요")
+    return
+    }
+    else if(isNaN(on_hour) == 1 || isNaN(on_min) == 1  || isNaN(off_hour) == 1 || isNaN(off_min) == 1){
+    alert("문자는 포함할 수 없습니다")
+    return
+    }
+    else if(on_hour.indexOf(".") != -1 || on_min.indexOf(".") != -1 ||off_hour.indexOf(".") != -1 ||off_min.indexOf(".") != -1 ){
+    alert("소수점은 포함할 수 없습니다.")
+    return
+    }
+    else if(on_hour < 0 || on_min < 0  || off_hour < 0 || off_min < 0){
+    alert("0 미만의 수는 입력할 수 없습니다.")
+    return
+    }
+    else if(on_hour >= 24 || off_hour >= 24){
+    alert("시간은 24시보다 작아야합니다.")
+    return
+    }
+    else if(off_min >= 60 || off_hour >= 60){
+    alert("분은 60분 보다 작아야합니다.")
+    return
+    }
+
+       $.ajax({
+    url : '{% url 'update_on_off' %}',
+    type : 'POST',
+    data : param,
+    success:function(data){
+    alert("설정되었습니다")
+    },
+    error: function(){
+        alert('error');}
+});
+    }
+</script>
+                </tr>
+        </form>
+</div>
+              </table>
+             </td>
+        </tr>
+
+        <!-- 시간-->
+         <tr style="height: 50px;">
+            <th>시간</th>
+            <td>
+              <table style="width: 320px; text-align: center;" align="center">
+                <tr>
+                  <td style="border: none;"><input type="text" class="text-field" id = "timenow" style="width: 200px; color: white;"></td>
+                  <td style="border: none;"><input type="button" onclick="timenow()" onMouseover="this.style.background='#787878';"
+                                                   onMouseout="this.style.background='#636363';"  value="시간 설정" class="VIDEO" /></td>
+                    <script>
+function timenow() {
+today = new Date();
+let hours = today.getHours(); // 시
+let minutes = today.getMinutes();  // 분
+let seconds = today.getSeconds();
+ $("#timenow").val(hours + ':' + minutes + ':' + seconds);
+    }
+    </script>
+                </tr>
+              </table>
+
+             </td>
+        </tr>
+    </tbody>
+
+
+</table>
+</body>
+{% endblock content %}

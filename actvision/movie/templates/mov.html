@@ -1,0 +1,1373 @@
+{% extends 'base.html' %} 
+{%block content%} 
+{%load static%}
+<head>
+    <style>
+        @charset "utf-8";
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body{
+            background-color: #454545;
+            text-align: center;
+            margin: 0px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cont{
+            width: 775px;
+            height: 200px;
+            margin-top: 146px;
+        }
+
+/*table {width:800}*/
+.settings, th, td { align-items: center; text-align: center;}  /* 2열 크기*/
+
+/* 헤드부 */
+th{
+    background-color: #EEEEEE;
+    color: black;
+    font-weight: 500;
+    font-size: 16px;
+    height: 25px;
+    border-bottom: 5px solid #454545;
+    border-top: 2px solid #C3C3C3;
+    border-left: 2px solid #C3C3C3;
+}
+.th_first{ width: 70px;}
+.th_second{width: 350px;}
+.th_third{width: 240px;}
+.odd{ background-color: #EEEEEE; height: 25px; }
+.even{ background-color: #C8C8C8; height: 25px;}
+.odd td{ border-left: 2px solid #C3C3C3; border-top: 2px solid #C3C3C3;}
+.even td{ border-left: 2px solid #F3F3F3; border-top: 2px solid #F3F3F3;}
+
+#contents{
+    width: 678px;
+    height: 180px;
+    position: relative;
+    overflow: auto;
+    float: left;
+    margin-top: 5px;
+}
+
+
+#contents table{
+    table-layout: fixed;
+    border-collapse: collapse;
+
+}
+
+.bx_tb1{
+    zoom: 1;
+    height: 100%;
+}
+
+#chooseFile {
+    visibility: hidden;
+}
+
+.img-btn{
+    color: white;
+    background-color: #636363;
+    width: 60px;
+    height: 28px;
+    padding-top: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.buttons{
+    width: 60px;
+    height: 195px;
+    float: right;
+}
+
+.add-btn{
+    background-color: #636363;
+    color: white;
+    width: 60px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 35px;
+    border-radius: 5px;
+}
+
+.delete-btn{
+    background-color: #636363;
+    color: red;
+    width: 60px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+/* up 추가 */
+#popup {
+display: flex;
+justify-content: center;
+align-items: center;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 1;
+}
+
+#popup.hide {
+display: none;
+}
+
+#popup.has-filter {
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+}
+
+#popup .content {
+    width: 550px;
+    height: 200px;
+    background: #454545;
+    border-radius: 6px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+    color: white;
+    text-align: center;
+}
+
+#popup .title{
+    border-bottom: #363636 4px solid;
+    height: 30px;
+    font-size: 14px;
+    padding-top: 10px;
+
+}
+
+#popup .list-box{
+    background-color: #454545;
+    border:2px solid #888888;
+    height: 28px;
+    width: 340px;
+}
+
+#popup table{
+    margin-top: 10px;
+    margin-left: 365px;
+}
+
+#popup .okay{
+    background-color: #636363;
+    color:white;
+    border: none;
+    width: 70px;
+    height: 30px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+#popup .cancel{
+    background-color: #636363;
+    color:white;
+    border: none;
+    width: 70px;
+    height: 30px;
+    cursor: pointer;
+}
+
+    .send-btn{
+        background-color: #636363;
+        color: #08AAE5;
+        width: 60px;
+        height: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        margin-top: 20px;
+        border-radius: 5px;
+    }
+
+
+
+    /* up 삭제 */
+
+    #popupDelete {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    #popupDelete.hide {
+    display: none;
+    }
+
+    #popupDelete.has-filter {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    }
+
+    #popupDelete .content {
+        width: 550px;
+        height: 210px;
+        background: #454545;
+        border-radius: 6px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+        color: white;
+        text-align: center;
+    }
+
+    #popupDelete .title{
+        border-bottom: #363636 4px solid;
+        height: 30px;
+        font-size: 14px;
+        padding-top: 10px;
+
+    }
+
+    #popupDelete table{
+        margin-top: 10px;
+        margin-left: 365px;
+    }
+
+    #popupDelete .okay{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 30px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    #popupDelete .cancel{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    /* up 전송 */
+
+#popupSend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    }
+
+    #popupSend.hide {
+    display: none;
+    }
+
+    #popupSend.has-filter {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    }
+
+    #popupSend .content {
+        width: 550px;
+        height: 210px;
+        background: #454545;
+        border-radius: 6px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+        color: white;
+        text-align: center;
+    }
+
+    #popupSend table{
+        margin-top: 10px;
+        margin-left: 365px;
+    }
+
+    #popupSend .title{
+        border-bottom: #363636 4px solid;
+        height: 30px;
+        font-size: 14px;
+        padding-top: 10px;
+
+    }
+
+    #popupSend .okay{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 30px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    #popupSend .cancel{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    /* 아래 표 */
+
+    .cont-down{
+        width: 775px;
+        height: 200px;
+        margin-top: 60px;
+    }
+
+    #redpointer{
+        width: 28px;
+        height: 25px;
+        border-radius: 5px;
+        float: left;
+    }
+
+    #greenpointer{
+        width: 28px;
+        border-radius: 5px;
+        margin-right: -3px;
+        height: 25px;
+    }
+
+    .text-btn{
+        color: white;
+        background-color: #636363;
+        width: 60px;
+        height: 28px;
+        padding-top: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+     /* schedule */
+
+     #popups {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #popups.hide {
+        display: none;
+        }
+
+        #popups .content {
+            width: 270px;
+            height: 320px;
+            background: #454545;
+            border-radius: 6px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+            color: white;
+            text-align: center;
+        }
+
+        #popups .title{
+            border-bottom: 1px solid #7C7C7C;
+            height: 35px;
+            font-size: 12px;
+            align-items: center;
+        }
+
+        #popups .title span{
+            line-height: 35px;
+        }
+
+        .text-field{
+            background-color: #454545;
+            border: 1px solid #888888;
+            width: 140px;
+            height: 22px;
+            border-radius: 3px;
+            text-decoration: white;
+        }
+
+        #popups .date-startend{
+            height: 110px;
+            border-bottom: 1px solid #7C7C7C;
+        }
+
+        #popups .dateA{
+            width: 84px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        #popups .date-time{
+            height: 125px;
+            border-bottom: 1px solid #7C7C7C;
+        }
+
+        #popups .date-time table{
+            height: 50px;
+            width: 80%;
+            margin-top: 10px;
+        }
+
+        #popups .date-time table .middle{
+            color: white;
+            width: 7px;
+        }
+
+        #popups .date-time table input{
+            background-color: #454545;
+            color: white;
+            border: 1px solid #7C7C7C;
+            height: 30px;
+            width: 70px;
+        }
+
+        #popups .date-button td{
+            border: 3px solid #454545;
+        }
+
+        #popups .date-button button{
+            width: 27px;
+            height: 27px;
+            background-color: #454545;
+            color: white;
+            border: 1px solid #7C7C7C;
+        }
+
+        #popups .button-table{
+
+            margin-left: 90px;
+        }
+
+        #popups .okay{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        #popups .cancel{
+            background-color: #636363;
+            color:white;
+            border: none;
+            width: 70px;
+            height: 30px;
+            cursor: pointer;
+        }
+    </style>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div class="cont">
+        <div id="contents" >
+            <div class="bx_tb1">
+                <table class="setting">
+                        <!-- 헤드부 -->
+
+                    <script>
+i=1;
+play_list_index = -1;
+video_index = -1;
+j=1;
+$(document).ready(function(){
+    var list_context = JSON.parse("{{ context|escapejs }}");
+    //alert(list_context['list_index']);
+    play_list_index = list_context['list_index'];
+
+    for(var index=0; index < list_context['list_name'].length; index++) {
+
+    var id_list = "list_Name";
+    var name_list =  document.getElementById(id_list + i); // 파일 이름 받아옴
+    name_list.textContent = list_context['list_name'][index];  // 재생목록 띄우기
+
+    var id_list2 = "up-number_list";
+    var date_list =  document.getElementById(id_list2 + i); // 파일 이름 받아옴
+    date_list.textContent = list_context['list_date'][index];  // 재생목록 띄우기
+
+    i++;
+
+    }
+
+    for(var index=0; index < list_context['list_media'].length; index++) {
+    var id_name = "fileName";
+    var name =  document.getElementById(id_name + j); // 파일 이름 받아옴
+    name.textContent = list_context['list_media'][index];
+
+    j++;
+
+    }
+
+
+});
+                    </script>
+
+                    <tbody>
+                        <tr>
+                            <th class="th_first">선택</th>
+                            <th class="th_second">재생목록</th>
+                            <th class="th_third">등록일</th>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="0" id="flexCheckDefault0" name="ckbSelect" onclick='checkOnlyOne(this, 0)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name1"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list1"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault1" name="ckbSelect" onclick='checkOnlyOne(this, 1)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name2"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list2"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="2" id="flexCheckDefault2" name="ckbSelect" onclick='checkOnlyOne(this, 2)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name3"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list3"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="3" id="flexCheckDefault3" name="ckbSelect" onclick='checkOnlyOne(this, 3)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name4"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list4"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="4" id="flexCheckDefault4" name="ckbSelect" onclick='checkOnlyOne(this, 4)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name5"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list5"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="5" id="flexCheckDefault5" name="ckbSelect" onclick='checkOnlyOne(this, 5)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name6"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list6"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="6" id="flexCheckDefault6" name="ckbSelect" onclick='checkOnlyOne(this, 6)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name7"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list7"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="7" id="flexCheckDefault7" name="ckbSelect" onclick='checkOnlyOne(this, 7)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name8"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list8"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="8" id="flexCheckDefault8" name="ckbSelect" onclick='checkOnlyOne(this, 8)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name9"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list9"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="9" id="flexCheckDefault9" name="ckbSelect" onclick='checkOnlyOne(this, 9)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name10"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list10"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="10" id="flexCheckDefault10" name="ckbSelect" onclick='checkOnlyOne(this, 10)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name11"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list11"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="11" id="flexCheckDefault11" name="ckbSelect" onclick='checkOnlyOne(this, 11)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name12"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list12"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="12" id="flexCheckDefault12" name="ckbSelect" onclick='checkOnlyOne(this, 12)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name13"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list13"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="13" id="flexCheckDefault13" name="ckbSelect" onclick='checkOnlyOne(this, 13)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name14"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list14"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="14" id="flexCheckDefault14" name="ckbSelect" onclick='checkOnlyOne(this, 14)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name15"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list15"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="15" id="flexCheckDefault15" name="ckbSelect" onclick='checkOnlyOne(this, 15)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name16"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list16"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="16" id="flexCheckDefault16" name="ckbSelect" onclick='checkOnlyOne(this, 16)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name17"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list17"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="17" id="flexCheckDefault17" name="ckbSelect" onclick='checkOnlyOne(this, 17)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name18"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list18"></p></div></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="18" id="flexCheckDefault18" name="ckbSelect" onclick='checkOnlyOne(this, 18)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name19"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list19"></p></div></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="19" id="flexCheckDefault19" name="ckbSelect" onclick='checkOnlyOne(this, 19)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="list_Name20"></p></div></td>
+                            <td><div id="my_delete_div"><p id="up-number_list20"></p></div></td>
+                        </tr>
+
+
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <!--추가 팝업-->
+            <div id="aside">
+                <div class="button">
+                    <button onclick="showPopup(false)" class="add-btn">추가</button>
+                </div>
+                <div id="popup" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                            재생목록추가
+                        </div>
+                        <p style="margin-top: 25px; height: 65px; border-bottom: #363636 4px solid; ">
+                            <span style="font-size: 14px; padding-right: 15px;">재생목록이름</span>
+                            <input class="list-box" type="text" id="name_of_list" style="color: white;">
+                        </p>
+                        <table>
+                            <tr>
+                                <td>
+                                    <button class="okay" onclick="closePopup_list()">확인</button>
+                                    <script>
+function closePopup_list() {
+	const popup = document.querySelector('#popup');
+
+	var name_of_list = document.getElementById("name_of_list").value;
+    var id_list = "list_Name";
+    var name_list =  document.getElementById(id_list + i); // 파일 이름 받아옴
+    i++;
+    name_list.textContent = name_of_list;  // 재생목록 띄우기
+
+    var param = {'list' : name_of_list }
+    $.ajax({
+    url : '{% url 'upload_list' %}',
+    type : 'POST',
+    data : param,
+    success:function(data){
+    location.reload();},
+    error: function(){
+        alert('error');}
+    });
+
+
+
+    popup.classList.add('hide');   // 창 닫기
+}
+
+                                    </script>
+                                </td>
+                                <td>
+                                    <button class="cancel" onclick="closePopup()">취소</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <script src="{%static 'popup.js'%}"></script>
+            </div>
+
+            <div id="aside">
+                <div class="button">
+                    <button onclick="showPopupDelete_play_list(false)" class="delete-btn" style="margin-top: 20px;">삭제</button>
+                    <script>
+function showPopupDelete_play_list(hasFilter) {
+    const popup = document.querySelector('#popupDelete');
+
+    if (hasFilter) {
+  	    popup.classList.add('has-filter');
+    } else {
+  	    popup.classList.remove('has-filter');
+    }
+    popup.classList.remove('hide');
+
+    var param = {'play_list_index' : play_list_index }
+    $.ajax({
+    url : '{% url 'delete_play_list' %}',
+    type : 'POST',
+    data : param,
+    success:function(data){
+    location.reload();
+    },
+    error: function(){
+        alert('error');}
+    });
+
+
+    }
+
+                    </script>
+                </div>
+                <div id="popupDelete" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                            재생목록삭제
+                        </div>
+                       <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                           <span style="font-size: 14px; text-align: center;">삭제 하시겠습니까?</span>
+                       </p>
+                       <table>
+                           <tr>
+                               <td>
+                                    <button class="okay" onclick="closePopupDelete()">확인</button>
+                               </td>
+                               <td>
+                                    <button class="cancel" onclick="closePopupDelete()">취소</button>
+                               </td>
+                           </tr>
+                       </table>
+                    </div>
+                </div>
+                <script src="{%static 'popupDelete.js'%}"></script>
+            </div>
+
+            <div id="aside">
+                <div class="button" >
+                    <button onclick="showPopupSend(false)" class="send-btn">전송</button>
+                </div>
+                <div id="popupSend" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                            재생목록전송
+                        </div>
+                       <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                           <span style="font-size: 14px; text-align: center;">전송 하시겠습니까?</span>
+                       </p>
+                       <table>
+                           <tr>
+                               <td>
+                                    <button class="okay" onclick="closePopupSend()">확인</button>
+                               </td>
+                               <td>
+                                    <button class="cancel" onclick="closePopupSend()">취소</button>
+                               </td>
+                           </tr>
+                       </table>
+                    </div>
+                </div>
+                <script src="{%static 'popupSend.js'%}"></script>
+            </div>
+        </div>
+    </div>
+
+    <div class="cont-down">
+        <div id="contents" >
+            <div class="bx_tb1">
+                <table class="setting">
+                        <!-- 헤드부 -->
+
+                    <tbody>
+                        <tr>
+                            <th class="th_first">선택</th>
+                            <th class="th_second">파일이름</th>
+                            <th class="th_third">재생일정</th>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,0)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName1"></p></div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="up-number"></p></div>
+                            </td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,1)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="my_delete_div"><p id="fileName2"></p></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,2)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName3"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,3)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName4"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,4)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName5"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,5)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName6"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,6)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName7"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,7)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName8"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,8)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName9"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,9)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName10"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,10)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName11"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,11)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName12"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,12)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName13"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,13)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName14"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,14)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName15"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,15)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName16"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,16)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName17"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,17)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName18"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,18)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName19"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="video_check" onclick="checkOnlyOneUnder(this,19)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="my_delete_div"><p id="fileName20"></p></div>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="buttons">
+                    <!--추가 팝업-->
+            <div id="aside">
+                <div class="button">
+                    <img src="{% static 'redpointer.png'%}" id="redpointer">
+                </div>
+            </div>
+
+            <div id="aside">
+                <div class="button">
+                    <img src="{% static 'greenpointer.png'%}" id="greenpointer">
+                </div>
+            </div>
+
+            <div id="aside">
+                <form method="post" enctype="multipart/form-data" id="uploadForm">{% csrf_token %}
+                    <div class="button">
+                        <label for="chooseFile">
+                            <div class="img-btn" align="center">등록</div>
+                        </label>
+                    </div>
+                    <input type="file" id="chooseFile" name="chooseFile" accept=".mp4" onchange="loadFile(this)">
+                    <script>
+                        function loadFile(input) {
+
+                            var file = input.files[0];
+
+                            var formData = new FormData();
+                            formData.append("video", file);
+                            formData.append("video_name", file.name);
+                            formData.append("list_name", play_list_index);
+
+                            var id_name = "fileName";
+                            var name =  document.getElementById(id_name + j); // 파일 이름 받아옴
+                            j++;
+                            name.textContent = file.name;
+
+                            $.ajax({
+                                type: "POST",
+                                enctype: 'multipart/form-data',
+                                url : '{% url 'upload_video' %}',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                cache: false,
+                                timeout: 600000,
+                                success: function (data) {
+                                },
+                                error: function (e) {
+                                    alert('fail');
+                                }
+                            });
+
+                        }
+
+                    </script>
+                </form>
+
+            </div>
+
+            <div id="aside">
+                <div class="button">
+                    <button onclick="showPopupDelete_video(false)" class="delete-btn">삭제</button>
+                    <script>
+                        function showPopupDelete_video(hasFilter) {
+    const popup = document.querySelector('#popupDelete');
+
+    if (hasFilter) {
+  	    popup.classList.add('has-filter');
+    } else {
+  	    popup.classList.remove('has-filter');
+    }
+    popup.classList.remove('hide');
+
+    var param = {'index' : video_index, }
+    $.ajax({
+    url : '{% url 'delete_play_list' %}',
+    type : 'POST',
+    data : param,
+    success:function(data){
+    location.reload();
+    },
+    error: function(){
+        alert('error');}
+    });
+
+
+    }
+
+                    </script>
+                </div>
+                <div id="popupDelete" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                             재생목록삭제
+                        </div>
+                        <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                            <span style="font-size: 14px; text-align: center;">삭제 하시겠습니까?</span>
+                        </p>
+                        <div align="right" style="margin-top: 0px; padding-right:20px;">
+                            <span style="padding-right: 10px;">
+                                <button class="okay" onclick="deleteDiv()">확인</button>
+                            </span>
+                            <button class="cancel" onclick="closePopupDelete()">취소</button>
+                        </div>
+                    </div>
+                </div>
+                <script src="{%static 'popupDelete.js'%}"></script>
+
+            </div>
+
+
+            <div id="aside">
+                <div class="button" style="margin-top: 20px;">
+                    <button onclick="showPopups(false)" style="margin-top: 0px;" class="send-btn">일정</button>
+                </div>
+                <div id="popups" class="hide">
+                    <div class="content">
+                        <div class="title">
+                            <span>재생일정</span>
+                        </div>
+                        <div class="date-startend" align="center">
+                            <table style="height: 105px; padding-top: 8px; padding-bottom: 8px; ">
+                                <tr>
+                                    <td class="dateA">
+                                        시작
+                                    </td>
+                                    <td>
+                                        <input type="date" value="2021-07-06" name="id" class="text-field" style="color: white; ">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="dateA">
+                                        종료
+                                    </td>
+                                    <td>
+                                        <input type="date" value="2021-07-06" name="id" class="text-field" style="color: white; ">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="date-time" align="center">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input type="time">
+                                    </td>
+                                    <td class="middle">
+                                        ~
+                                    </td>
+                                    <td>
+                                        <input type="time">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="date-button">
+                                <tr>
+                                    <td><button >일</button></td>
+                                    <td><button >월</button></td>
+                                    <td><button >화</button></td>
+                                    <td><button >수</button></td>
+                                    <td><button >목</button></td>
+                                    <td><button >금</button></td>
+                                    <td><button >토</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <table class="button-table">
+                            <tr>
+                                <td>
+                                    <button class="okay" onclick="closePopups()">확인</button>
+                                </td>
+                                <td>
+                                    <button class="cancel" onclick="closePopups()">취소</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <script src="{%static 'popupSchedule.js'%}"></script>
+            </div>
+
+        </div>
+    </div>
+        <!-- 체크박스 클릭 하나만 할 수 있도록 -->
+        <script>
+            function checkOnlyOne(element, index) {
+                const checkboxes
+                    = document.getElementsByName("ckbSelect");
+                checkboxes.forEach((cb) => {
+                    cb.checked = false;
+                })
+                element.checked = true;
+
+            var param = {'index' : index };
+            $.ajax({
+            url : '{% url 'video_list' %}',
+            type : 'POST',
+            data : param,
+            success:function(data){
+            location.reload();
+            },
+            error: function(){
+                alert('error');}
+            });
+
+            }
+
+
+    function checkOnlyOneUnder(element, index) {
+        const checkboxes = document.getElementsByName("video_check");
+                checkboxes.forEach((cb) => {
+                    cb.checked = false;
+                })
+                element.checked = true;
+            }
+
+            video_index = index;
+
+        </script>
+
+</body>
+{%endblock content%} 

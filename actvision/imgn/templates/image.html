@@ -1,0 +1,1634 @@
+{% extends 'base.html' %} 
+{%block content%} 
+{%load static%}
+<head>
+
+    <style>
+        @charset "utf-8";
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-color: #454545;
+    text-align: center;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cont{
+    width: 775px;
+
+    height: 200px;
+    margin-top: 146px;
+}
+
+/*table {width:800}*/
+.settings, th, td { align-items: center; text-align: center;}  /* 2열 크기*/
+
+/* 헤드부 */
+th{
+    background-color: #EEEEEE;
+    color: black;
+    font-weight: 500;
+    font-size: 16px;
+    height: 25px;
+    border-bottom: 5px solid #454545;
+    border-top: 2px solid #C3C3C3;
+    border-left: 2px solid #C3C3C3;
+}
+.th_first{ width: 70px;}
+.th_second{width: 350px;}
+.th_third{width: 240px;}
+.setting tbody tr:nth-child(2n){
+    background-color: #EEEEEE; height: 25px;
+}
+.setting tbody tr:nth-child(2n+1){
+    background-color: #C8C8C8; height: 25px;
+}
+.setting tbody td:nth-child(2n) div{
+    width:350px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.odd td{ border-left: 2px solid #C3C3C3; border-top: 2px solid #C3C3C3;}
+.even td{ border-left: 2px solid #F3F3F3; border-top: 2px solid #F3F3F3;}
+
+#contents{
+    width: 678px;
+    height: 180px;
+    position: relative;
+    overflow: auto;
+    float: left;
+    margin-top: 5px;
+}
+
+
+#contents table{
+    table-layout: fixed;
+    border-collapse: collapse;
+
+}
+
+.bx_tb1{
+    zoom: 1;
+    height: 100%;
+}
+
+#chooseFile {
+    visibility: hidden;
+}
+
+.img-btn{
+    color: white;
+    background-color: #636363;
+    width: 60px;
+    height: 28px;
+    padding-top: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.img-btn:hover{
+    background-color: #7a7a7a;
+}
+
+.buttons{
+    width: 60px;
+    height: 195px;
+    float: right;
+}
+
+.minute{
+    width: 56px;
+    height: 30px;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    background-color: #363636;
+    margin-top: -15px;
+    border: 2px solid #747474;
+}
+
+.delete-btn{
+    background-color: #636363;
+    color: red;
+    width: 60px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.delete-btn:hover{
+    background-color: #7a7a7a;
+}
+
+#redpointer{
+    width: 28px;
+    height: 25px;
+    border-radius: 5px;
+    float: left;
+}
+
+#greenpointer{
+    width: 28px;
+    border-radius: 5px;
+    margin-right: -3px;
+    height: 25px;
+}
+
+
+/* up 삭제 */
+
+#popupDelete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    }
+
+    #popupDelete.hide {
+    display: none;
+    }
+
+    #popupDelete.has-filter {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    #popupDelete .content {
+        width: 550px;
+        height: 210px;
+        background: #454545;
+        border-radius: 6px;
+        box-shadow: 0px 0px 20px 12px  #383838;
+        color: white;
+        text-align: center;
+    }
+
+    #popupDelete .title{
+        border-bottom: #363636 4px solid;
+        height: 30px;
+        font-size: 14px;
+        padding-top: 10px;
+
+    }
+
+    #popupDelete table{
+        border: none;
+        margin-left: 65%;
+        margin-top: 10px;
+    }
+
+    #popupDelete table td{
+        background-color: none;
+        padding-left: 5px;
+    }
+
+    #popupDelete .okay{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    #popupDelete .okay:hover{
+        background-color: #7a7a7a;
+    }
+
+    #popupDelete .cancel{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    #popupDelete .cancel:hover{
+        background-color: #7a7a7a;
+    }
+
+    /* 아래 표 */
+
+    .cont-down{
+        width: 775px;
+        height: 200px;
+        margin-top: 60px;
+    }
+
+    .text-btn{
+        color: white;
+        background-color: #636363;
+        width: 60px;
+        height: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .text-btn:hover{
+        background-color: #7a7a7a;
+    }
+
+        /* 일정 */
+
+    #popupletter {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+
+    }
+
+    #popupletter.hide {
+    display: none;
+    }
+
+    #popupletter.has-filter {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    }
+
+    #popupletter .content {
+        width: 260px;
+        height: 585px;
+        background: #454545;
+        border-radius: 6px;
+        box-shadow: 0px 0px 20px 12px  #383838;
+        color: white;
+        text-align: center;
+        font-size: 12px;
+
+    }
+
+    #popupletter .title{
+        height: 30px;
+        font-size: 14px;
+        padding-top: 10px;
+    }
+
+    #popupletter .okay{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 25px;
+        right: 0;
+    }
+
+    #popupletter .okay:hover{
+        background-color: #7a7a7a;
+    }
+
+    #popupletter .cancel{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 25px;
+        cursor: pointer;
+    }
+
+    #popupletter .cancel:hover{
+        background-color: #7a7a7a;
+    }
+
+    #popupletter .text-field{
+        background-color: #454545;
+        border: 1px solid #888888;
+        height: 25px;
+        width: 150px;
+    }
+
+    #popupletter .hr-location{
+        display: flex;
+        flex-basis: 100%;
+        align-items: center;
+        color: white;
+        font-size: 12px;
+
+    }
+
+    .hr-location::after {
+        content: "";
+        flex-grow: 1;
+        background: #535353;
+        height: 2px;
+        font-size: 0px;
+        line-height: 0px;
+        margin: 8px 16px;
+    }
+
+    #popupletter .downbutton{
+        width: 12px;
+        height: auto;
+        padding: 3px;
+    }
+
+    #popupletter .x-axis{
+        background-color: #454545;
+        border: 1px solid #888888;
+        height: 25px;
+        width: 65px;
+        color: white;
+    }
+
+    #popupletter .index{
+        width: 30px;
+        font-size: 12px;
+    }
+
+    .bold-btn{
+        width: 30px;
+        height: 30px;
+        background-color: #636363;
+        border:none;
+        margin-top: 5px;
+        color: white;
+        font-weight: 600;
+    }
+
+    .bold-btn:hover{
+        background-color: #838383;
+    }
+
+    .slant-btn{
+        width: 30px;
+        height: 30px;
+        background-color: #636363;
+        border:none;
+        margin-top: 10px;
+        color: white;
+        font-weight: 600;
+        font-style: italic;
+    }
+
+    .slant-btn:hover{
+        background-color: #838383;
+    }
+
+    #favcolor{
+        background-color: #636363;
+    }
+
+    .edit-btn{
+        color: white;
+        background-color: #636363;
+        width: 60px;
+        height: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .edit-btn:hover{
+        background-color: #7a7a7a;
+    }
+
+    .cont-last{
+        width: 300px;
+        height: 30px;
+        margin-top: 20px;
+        margin-left: 30%;
+    }
+
+    .show-btn{
+        color: white;
+        background-color: #636363;
+        width: 120px;
+        height: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 15px;
+        border-radius: 5px;
+        float: left;
+    }
+
+    .show-btn:hover{
+        background-color: #7a7a7a;
+    }
+
+    .event-btn{
+        color: white;
+        background-color: #636363;
+        width: 120px;
+        height: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 15px;
+        border-radius: 5px;
+        float: right;
+    }
+
+    .event-btn:hover{
+        background-color: #7a7a7a;
+    }
+
+    .main{
+        margin-top: 10px;
+    }
+
+    .main section {
+        display: none;
+        margin-bottom: 10px;
+    }
+
+    .main input:hover {
+        cursor: pointer;
+    }
+
+    #tab1:checked ~ #content1,
+    #tab2:checked ~ #content2 {
+        display: block;
+    }
+
+    /* 아래 삭제 버튼 popup */
+
+#popupDelete_text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    }
+
+    #popupDelete_text.hide {
+    display: none;
+    }
+
+    #popupDelete_text.has-filter {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    #popupDelete_text .content {
+        width: 550px;
+        height: 210px;
+        background: #454545;
+        border-radius: 6px;
+        box-shadow: 0px 0px 20px 12px  #383838;
+        color: white;
+        text-align: center;
+    }
+
+    #popupDelete_text .title{
+        border-bottom: #363636 4px solid;
+        height: 30px;
+        font-size: 14px;
+        padding-top: 10px;
+
+    }
+
+    #popupDelete_text table{
+        border: none;
+        margin-left: 65%;
+        margin-top: 10px;
+    }
+
+    #popupDelete_text table td{
+        background-color: none;
+        padding-left: 5px;
+    }
+
+    #popupDelete_text .okay{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    #popupDelete_text .okay:hover{
+        background-color: #7a7a7a;
+    }
+
+    #popupDelete_text .cancel:hover{
+        background-color: #7a7a7a;
+    }
+
+    #popupDelete_text .cancel{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+/* 미리보기 popup창 */
+
+#popup_preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    }
+
+    #popup_preview.hide {
+    display: none;
+    }
+
+    #popup_preview.has-filter {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    #popup_preview .content {
+        width: 550px;
+        height: 475px;
+        background: #454545;
+        border-radius: 6px;
+        box-shadow: 0px 0px 20px 12px  #383838;
+        color: white;
+        text-align: center;
+    }
+
+    #popup_preview .title{
+        border-bottom: #363636 4px solid;
+        height: 30px;
+        font-size: 14px;
+        padding-top: 10px;
+    }
+
+    #popup_preview .preview{
+        height: 350px;
+        border-bottom: #363636 4px solid;
+        text-align: center;
+        align-items: center;
+    }
+
+    #popup_preview .preview .box{
+        width: 500px;
+        height: 320px;
+        margin-top: 20px;
+        margin-left: 25px;
+        border: 1px solid yellow;
+    }
+
+    #popup_preview table{
+        border: none;
+        margin-left: 68%;
+        margin-top: 10px;
+    }
+
+    #popup_preview table td{
+        background-color: none;
+        padding-left: 5px;
+    }
+
+    #popup_preview .okay{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    #popup_preview .okay:hover{
+        background-color: #7a7a7a;
+    }
+
+    #popup_preview .cancel{
+        background-color: #636363;
+        color:white;
+        border: none;
+        width: 70px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    #popup_preview .cancel:hover{
+        background-color: #7a7a7a;
+    }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    {% csrf_token %}
+</head>
+<meta charset="UTF-8">
+<body>
+    <div class="cont">
+        <div id="contents" >
+            <div class="bx_tb1">
+                <table class="setting"  id="tblMember">
+                        <!-- 헤드부 -->
+
+                    <script>
+                        i=1;
+                        j=1;
+                        scroll = 0;
+                        $(document).ready(function(){
+                            var list_context = JSON.parse("{{ context|escapejs }}");
+                            for(var index=0; index < list_context['img_name'].length; index++) {
+                                var id_name = "fileName";
+                                var name_set =  document.getElementById(id_name + i);
+                                name_set.textContent = list_context['img_name'][index];
+
+                                var id_time = "up-number";
+                                var img_time_set =  document.getElementById(id_time + i);
+                                const str = list_context['img_time'][index];
+                                const str_1 = str + '초';
+                                img_time_set.textContent = str_1;
+
+                                i++;
+                            }
+                                for(var index=0; index < list_context['text'].length; index++) {
+                                var text_id_name = "text_fileName";
+                                var text_name =  document.getElementById(text_id_name + j); // 파일 이름 받아옴
+                                text_name.textContent = list_context['text'][index];
+
+                                j++;
+                            }
+
+                        });
+
+                    </script>
+
+ <tbody>
+                        <tr>
+                            <th class="th_first">선택</th>
+                            <th class="th_second">사진목록</th>
+                            <th class="th_third">지속시간</th>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="0" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName1"></div></td>
+                            <td><p id="up-number1"></p></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName2"></div></td>
+                            <td><p id="up-number2"></p></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="2" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName3"></div></td>
+                            <td><p id="up-number3"></p></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="3" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName4"></div></td>
+                            <td><p id="up-number4"></p></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="4" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName5"></div></td>
+                            <td><p id="up-number5"></p></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="5" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName6"></div></td>
+                            <td><p id="up-number6"></p></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="6" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName7"></div></td>
+                            <td><p id="up-number7"></p></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="7" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName8"></div></td>
+                            <td><p id="up-number8"></p></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="8" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName9"></div></td>
+                            <td><p id="up-number9"></p></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="9" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName10"></div></td>
+                            <td><p id="up-number10"></p></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="10" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName11"></div></td>
+                            <td><p id="up-number11"></p></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="11" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName12"></div></td>
+                            <td><p id="up-number12"></p></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="12" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName13"></div></td>
+                            <td><p id="up-number13"></p></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="13" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName14"></div></td>
+                            <td><p id="up-number14"></p></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="14" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName15"></div></td>
+                            <td><p id="up-number15"></p></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="15" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName16"></div></td>
+                            <td><p id="up-number16"></p></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="16" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName17"></div></td>
+                            <td><p id="up-number17"></p></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="17" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName18"></div></td>
+                            <td><p id="up-number18"></p></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="18" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName19"></div></td>
+                            <td><p id="up-number19"></p></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" type="checkbox" value="19" id="flexCheckDefault" name="ckbSelect" onclick='checkOnlyOne(this)'>
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="fileName20"></div></td>
+                            <td><p id="up-number20"></p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="buttons">
+                    <!--추가 팝업-->
+            <div id="aside">
+                <div class="button">
+                    <img src="{% static 'redpointer.png'%}" id="redpointer">
+                </div>
+            </div>
+
+            <div id="aside">
+                <div class="button">
+                    <img src="{% static 'greenpointer.png'%}" id="greenpointer">
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" id="uploadForm">{% csrf_token %}
+            <div id="aside">
+                    <div class="button">
+                        <label for="chooseFile">
+                            <div class="img-btn" align="center">사진</div>
+                        </label>
+                    </div>
+                    <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+            </div>
+
+            <div id="aside">
+                <div class="button">
+                    <input type="number" id="number" class="minute" min="0" max="120" value="0" maxlength="3">
+                </div>
+            </div>
+                </form>
+                    <script>
+                        function loadFile(input) {
+                            var file = input.files[0];
+                            var id_name = "fileName";
+                            var name =  document.getElementById(id_name + i); // 파일 이름 받아옴
+
+                            var id_time = "up-number";
+                            var name_time = document.getElementById(id_time + i); // 지속시간 표시 위치
+                            var input = document.getElementById('number').value; // 입력된 지속시간 값 받아옴
+                            if(input<=0){
+                                alert("0초는 재생할 수 없습니다");
+                                return
+                            }
+                            else if(input>120){
+                                alert("최대 지속시간인 120초로 변경하겠습니다");
+                                input = 120;
+                            }
+                            var stay_time = new String(input); // 지속시간
+
+                            var formData = new FormData();
+                            formData.append("img", file);
+                            formData.append("time", stay_time); // 이 부분은 request.POST['time']으로 찾아야함
+                            formData.append("img_name", file.name);
+
+                            name.textContent = file.name;
+                            const str = stay_time;
+                            const str_1 = str + '초';
+                            name_time.textContent = str_1;
+                            i++;
+
+                            $.ajax({
+                                type: "POST",
+                                enctype: 'multipart/form-data',
+                                url : '{% url 'upload_img' %}',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                cache: false,
+                                timeout: 600000,
+                                success: function (data) {
+                                },
+                                error: function (e) {
+                                    $('#btnUpload').prop('disabled', false);
+                                    alert('fail');
+                                }
+                            });
+                        }
+
+                        function btnDelete_onclick() {
+                            var ckbs = document.getElementsByName("ckbSelect");
+                                for (var i = 0; i < ckbs.length; i++) {
+                                    if (ckbs[i].checked) {
+                                        alert(i + '번 삭제');
+                                        tblMember.deleteRow(i + 1); // 행 삭제
+                                        const newRow = tblMember.insertRow(); // 행 추가
+                                        const newcell1 = newRow.insertCell(0);
+                                        const newcell2 = newRow.insertCell(1);
+                                        const newcell3 = newRow.insertCell(2);
+                                        var ckb = document.createElement("input");
+                                        ckb.type = "checkbox";
+                                        ckb.name = "ckbSelect";
+                                        newcell1.appendChild(ckb);
+                                        i--;
+                                        const popup = document.querySelector('#popupDelete');
+                                        popup.classList.add('hide');
+
+                                    }
+                                }
+                            }
+                    </script>
+
+            <div id="aside">
+                <div class="button">
+                    <button onclick="showPopupDelete(false)" class="delete-btn">삭제</button>
+                </div>
+                <div id="popupDelete" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                             재생목록삭제
+                        </div>
+                        <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                            <span style="font-size: 14px; text-align: center;">삭제 하시겠습니까?</span>
+                        </p>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="button" id="btnDelete" name="btnDelete" value="확인" class="okay" onclick="return btnDelete_onclick()" />
+                                </td>
+                                <td>
+                                    <button class="cancel" onclick="closePopupDelete()">취소</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <script src="{%static 'popupDelete.js'%}"></script>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="cont-down">
+        <div id="contents" >
+            <div class="bx_tb1">
+                <table class="setting" id="tblMember_text">
+                        <!-- 헤드부 -->
+
+                    <tbody>
+                        <tr>
+                            <th class="th_first">선택</th>
+                            <th class="th_second">문자목록</th>
+                            <th class="th_third">지속시간</th>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="0" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName1"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="1" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName2"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="2" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName3"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="3" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName4"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="4" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName5"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="5" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName6"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="6" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName7"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="7" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName8"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="8" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName9"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="9" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName10"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="10" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName11"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="11" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName12"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="12" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName13"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="13" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName14"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="14" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName15"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="15" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName16"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="16" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName17"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="17" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName18"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="18" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName19"></div></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even">
+                            <td>
+                                <div class="form-check" >
+                                    <input class="form-check-input" name="text_check" type="checkbox" value="19" id="flexCheckDefault" onclick="checkOnlyOneUnder(this)">
+                                    <label class="form-check-label" for="flexCheckDefault"></label>
+                                </div>
+                            </td>
+                            <td><div id="text_fileName20"></div></td>
+                            <td></td>
+                        </tr>
+
+
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+
+        <div class="buttons">
+                    <!--추가 팝업-->
+            <div id="aside">
+                <div class="button">
+                    <img src="{% static 'redpointer.png'%}" id="redpointer">
+                </div>
+            </div>
+
+            <div id="aside">
+                <div class="button">
+                    <img src="{% static 'greenpointer.png'%}" id="greenpointer">
+                </div>
+            </div>
+
+            <div id="aside">
+                <div class="button" style="margin-top: 15px;">
+                    <button onclick="showPopupletter(false)" style="margin-top: 0px;" class="text-btn">문자</button>
+                </div>
+                <div id="popupletter" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                            이름
+                            <input type="text" class="text-field" id ="text_list_name" style="color: white;">
+                        </div>
+                        <div class="box-location" style="height : 500px;">
+                            <div class="hr-location"><img src="{% static 'downbutton.jpg'%}" class="downbutton">위치(px)</div>
+                            <table style="padding: 8px;">
+                                <tr style="height: 40px;">
+                                    <td class="index">
+                                        X
+                                    </td>
+                                    <td style="width: 90px; text-align: left;">
+                                        <input type="number" value="0" id="x-axis" class="x-axis">
+                                    </td>
+                                    <td class="index">
+                                        Y
+                                    </td>
+                                    <td>
+                                        <input type="number" value="0" id="y-axis" class="x-axis">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="index">
+                                        W
+                                    </td>
+                                    <td  style="width: 90px; text-align: left;">
+                                        <input type="number" value="0" id="w-axis" class="x-axis">
+                                    </td>
+                                    <td class="index">
+                                        H
+                                    </td>
+                                    <td>
+                                        <input type="number" value="0" id="h-axis" class="x-axis">
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="hr-location"><img src="{% static 'downbutton.jpg'%}" class="downbutton">문자 속성</div>
+
+                            <div class="main">
+                                <input id="tab1" type="radio" name="tabs" onclick="scroll_state()" checked> <!--디폴트 메뉴-->
+                                <script>
+                                    function scroll_state() {
+                                    scroll = 0;
+                                    }
+                                </script>
+                                <label for="tab1">스크롤</label>
+
+                                <input id="tab2" type="radio" onclick="fix_state()" name="tabs">
+                                <label for="tab2">고정</label>
+                                <script>
+                                    function fix_state() {
+                                    scroll = 1;
+                                    }
+                                </script>
+
+                                <section id="content1">
+                                    <div class="title">
+                                        재생 속도 &nbsp;
+                                            <select name="재생속도" id ="play_speed" style="width: 145px; height: 28px; background-color: #454545; color: white;">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3" selected>3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                            </select>
+                                    </div>
+                                    <div class="title">
+                                        재생 횟수 &nbsp;
+                                        <input type="number" value="10" id="play_number" class="x-axis" style="width: 140px;">
+                                    </div>
+                                </section>
+
+                                <section id="content2">
+                                    <div class="title">
+                                        재생 시간 &nbsp;
+                                        <input type="number" value="0" id="input_text_min" class="x-axis" style="width: 40px;">
+                                        분
+                                        <input type="number" value="0" id="input_text_sec" class="x-axis" style="width: 40px;">
+                                        초
+                                    </div>
+                                </section>
+
+                            </div>
+
+                            <div class="hr-location"><img src="{% static 'downbutton.jpg'%}" class="downbutton">문자 입력</div>
+                            <div style="padding-top: 13px;">
+                                <select name="문자" style="width: 140px; height: 28px; background-color: #454545; color: white;">
+                                    <option value="NanumGothic" selected>NanumGothic</option>
+                                </select>
+                                &nbsp;
+                                <select name="재생속도" id ="text_size"style="width: 65px; height: 28px; background-color: #454545; color: white;">
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24" selected>24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+
+                                </select>
+                                <br>
+                                <div class="edit-box" style="text-align: left; margin-left: 23px;">
+                                    <button type="button" class="bold-btn" >B</button>
+                                <button type="button" class="slant-btn">I</button>
+                                <input type="color" name="favcolor" id="color_set" value="#CD1313" style="background-color: #454545;">
+                                </div>
+                                <br>
+                                <input type="text" id = "input_text" style="color:white; width: 210px; height: 120px; background-color: #454545; border: 1px solid #888888;">
+
+                            </div>
+
+                        </div>
+
+
+
+                        <span>
+                         <form action="" method="post" onsubmit="return false">{% csrf_token %}
+                                <input type="submit" class="okay" onclick="save_letter()" value="확인"/>
+                    <script>
+
+                        function save_letter() {
+
+                            const popup = document.querySelector('#popupletter');
+                            var x_axis = document.getElementById("x-axis").value;
+                            var y_axis = document.getElementById("y-axis").value;
+                            var w_axis = document.getElementById("w-axis").value;
+                            var h_axis = document.getElementById("h-axis").value;
+                            var play_speed = document.getElementById("play_speed").value;
+                            var play_number = document.getElementById("play_number").value;
+                            var text_size = document.getElementById("text_size").value;     // 문자 속성 - 고정 (재생 시간) , 글꼴 , 굵기 , 색상 미구현
+                            var input_text = new String(document.getElementById("input_text").value);
+                            var color_set = document.getElementById("color_set").value;
+                            var text_list_name = document.getElementById("text_list_name").value;
+
+                            var input_text_min = document.getElementById("input_text_min").value;
+                            var input_text_sec = document.getElementById("input_text_sec").value;
+                            var play_sec = (input_text_min * 6) + input_text_sec;
+
+
+
+                            var param = {"input_text" : input_text, "x_axis" : x_axis , "y_axis" : y_axis , "w_axis" : w_axis , "h_axis" : h_axis ,
+                            "play_speed" : play_speed , "play_number" : play_number , "text_size" : text_size , "color_set" : color_set, "text_list_name" : text_list_name,
+                            "scroll" : scroll, "play_sec" : play_sec,};
+
+                            var id_name = "text_fileName";
+                            var name =  document.getElementById(id_name + j); // 파일 이름 받아옴
+                            j++;
+                            name.textContent = text_list_name;
+
+                            $.ajax({
+                            url : '{% url 'save_letter' %}',
+                            type : 'POST',
+                            data : param,
+                            success:function(data){ },
+                            error: function(){
+                                alert('error');}
+                            });
+                            popup.classList.add('hide');
+                        }
+
+                        function btnDelete_text_onclick() {
+                            var ckbs = document.getElementsByName("text_check");
+                                for (var i = 0; i < ckbs.length; i++) {
+                                    if (ckbs[i].checked) {
+                                        alert(i + '번 삭제');
+                                        tblMember_text.deleteRow(i + 1); // 행 삭제
+                                        const newRow = tblMember_text.insertRow(); // 행 추가
+                                        const newcell1 = newRow.insertCell(0);
+                                        const newcell2 = newRow.insertCell(1);
+                                        const newcell3 = newRow.insertCell(2);
+                                        var ckb = document.createElement("input");
+                                        ckb.type = "checkbox";
+                                        ckb.name = "text_check";
+                                        newcell1.appendChild(ckb);
+                                        i--;
+                                        const popup = document.querySelector('#popupDelete_text');
+                                        popup.classList.add('hide');
+                                    }
+                                }
+                            }
+                    </script>
+
+                        </span>
+                        <button class="cancel" onclick="closePopupletter()">취소</button>
+                        </form>
+                    </div>
+                </div>
+
+                <script src="{%static 'popupletter.js'%}"></script>
+
+            </div>
+
+            <div id="aside">
+                <div class="button"  style="margin-top: 20px;">
+                    <button onclick="showPopupDeleteD(false)" style="margin-top: 0px;" class="edit-btn">편집</button>
+                </div>
+
+            </div>
+
+            <div id="aside">
+                <div class="button">
+                    <button onclick="showPopupDelete_text(false)" class="delete-btn">삭제</button>
+                </div>
+                <div id="popupDelete_text" class="hide">
+
+                    <div class="content">
+                        <div class="title">
+                             재생목록삭제
+                        </div>
+                        <p style="margin-top: 35px; height: 70px; border-bottom: #363636 4px solid; ">
+                            <span style="font-size: 14px; text-align: center;">삭제 하시겠습니까?</span>
+                        </p>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="button" id="btnDelete" name="btnDelete" value="확인" class="okay" onclick="return btnDelete_text_onclick()" />
+                                </td>
+                                <td>
+                                    <button class="cancel" onclick="closePopupDelete_text()">취소</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <script src="{%static 'popup_text.js'%}"></script>
+            </div>
+        </div>
+    </div>
+
+    <div class="cont-last">
+        <div id="aside">
+            <div class="button">
+                <button style="margin-top: 0px;" class="show-btn" onclick="showpopup_preview(false)">미리 보기</button>
+            </div>
+        </div>
+        <div id="popup_preview" class="hide">
+
+            <div class="content">
+                <div class="title">
+                    이벤트 목록 전송
+                </div>
+                <div class="preview">
+                    <div class="box">
+                        <p style="line-height: 300px;">이벤트 미리보기</p>
+                    </div>
+                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="button" id="btnDelete" name="btnDelete" value="확인" class="okay" />
+                        </td>
+                        <td>
+                            <button class="cancel" onclick="closepopup_preview()">취소</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <script>
+                function showpopup_preview(hasFilter) {
+                    const popup = document.querySelector('#popup_preview');
+
+                    if (hasFilter) {
+                        popup.classList.add('has-filter');
+                    } else {
+                        popup.classList.remove('has-filter');
+                    }
+
+                    popup.classList.remove('hide');
+                }
+
+                function closepopup_preview() {
+                    const popup = document.querySelector('#popup_preview');
+                    popup.classList.add('hide');
+                }
+
+            </script>
+        </div>
+
+        <div id="aside">
+            <div class="button">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <button style="margin-top: 0px;" class="event-btn" onclick="event_trans()">이벤트 전송</button>
+                    <script>
+                        function event_trans() {
+                        var obj_length = document.getElementsByName("text_check").length;
+                        var data = ["","","","","","","","","","","","","","","","","","","",""];
+                            for (var index=0; index<obj_length; index++) {
+                                if (document.getElementsByName("text_check")[index].checked == true) {
+                                    data[index] = document.getElementsByName("text_check")[index].value;
+                                }
+                            }
+                            var param = {'a' : data[0], 'b' : data[1],'c' : data[2],'d' : data[3],'e' : data[4], 'f' : data[5], 'g' : data[6],'h' : data[7],'i' : data[8],'j' : data[9],
+                            'k' : data[10], 'l' : data[11],'m' : data[12],'n' : data[13],'o' : data[14],'p' : data[15], 'q' : data[16],'r' : data[17],'s' : data[18],'t' : data[19],}
+                                $.ajax({
+                                    url : '{% url 'event_trans' %}',
+                                    type : 'POST',
+                                    data : param,
+                                    success:function(data){
+                                    },
+                                    error: function(){
+                                        alert('error');}
+                                });
+                        }
+                    </script>
+                </form>
+            </div>
+        </div>
+    </div>
+        <!-- 체크박스 클릭 하나만 할 수 있도록 -->
+        <script>
+            function checkOnlyOne(element) {
+                const checkboxes
+                    = document.getElementsByName("ckbSelect");
+
+                checkboxes.forEach((cb) => {
+                    cb.checked = false;
+                })
+
+                element.checked = true;
+            }
+            function checkOnlyOneUnder(element) {
+                const checkboxes
+                    = document.getElementsByName("text_check");
+
+                checkboxes.forEach((cb) => {
+                    cb.checked = false;
+                })
+
+                element.checked = true;
+            }
+
+
+            /*미리보기 팝업*/
+
+function showpopup_preview(hasFilter) {
+   const popup = document.querySelector('#popup_preview');
+
+  if (hasFilter) {
+     popup.classList.add('has-filter');
+  } else {
+     popup.classList.remove('has-filter');
+  }
+
+  popup.classList.remove('hide');
+}
+
+
+function closepopup_preview() {
+   const popup = document.querySelector('#popup_preview');
+  popup.classList.add('hide');
+}
+        </script>
+</body>
+{%endblock content%} 
